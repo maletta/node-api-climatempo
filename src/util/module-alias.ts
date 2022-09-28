@@ -18,3 +18,12 @@ moduleAlias.addAliases({
  * Neste arquivo é feito o mapeamento para depois que o projeto é buildado, para que o mapeamento depois de compilado
  * funcione assim como está descrito no tsconfig.
  */
+
+/**
+ * Aliases são úteis, mas confuso porque precisei configurar ele:
+ *
+ * - no typescript, no arquivo tsconfig.json
+ * - no código final, no arquivo module-alias, para os arquivos finais conseguirem mapear as importações
+ * - no jest.config.js, usando a propriedade moduleNameMapper
+ *
+ */
