@@ -1,5 +1,5 @@
-import { SetupServer } from "@src/server";
-import supertest from "supertest";
+import { SetupServer } from '@src/server';
+import supertest from 'supertest';
 
 // beforeAll executa antes de todos os testes, esse arquivo aqui é defidnido pra ser chamado
 // nos arquivos de configuração do jest: jest.config.js

@@ -10,5 +10,4 @@
 // console.log("__dirname ", __dirname);
 // console.log("root ", root);
 
-console.log("test");
-
+console.log('test');
