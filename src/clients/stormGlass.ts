@@ -1,6 +1,6 @@
 import { InternalError } from '@src/util/errors/internal-error';
-import { AxiosError } from 'axios';
 import config, { IConfig } from 'config';
+// Another way to have similar behaviour to TS namespaces
 import * as HTTPUtil from '@src/util/request';
 export interface StormGlassPointSource {
   [key: string]: number;

@@ -5,6 +5,12 @@ import { StormGlass } from '@src/clients/stormGlass';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import stormGlassNormalized3HoursFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
 
+export class FakeAxiosError extends Error {
+  constructor(public response: object) {
+    super();
+  }
+}
+
 // jest.mock('axios');
 jest.mock('@src/util/request');
 
@@ -82,12 +88,6 @@ describe('StormGlass client', () => {
     const lat = -33.792726;
     const lng = 151.289824;
 
-    class FakeAxiosError extends Error {
-      constructor(public response: object) {
-        super();
-      }
-    }
-
     mockedRequest.get.mockRejectedValue(
       new FakeAxiosError({
         status: 429,
@@ -95,6 +95,9 @@ describe('StormGlass client', () => {
       })
     );
 
+    // acho que tem que mockar o retorno das funções isRequestError, extractErrorData porque elas são estáticas,
+    // porque se não mockar o retorno elas não retornam o que deveriam, pq aparentemente o código dentro das funções
+    // estáticas nem é executado, testei inserindo log dentro as funções estáticas, logs não são invocados
     MockedRequestClass.isRequestError.mockReturnValue(true);
 
     MockedRequestClass.extractErrorData.mockReturnValue({
