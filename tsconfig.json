@@ -22,19 +22,11 @@
       "@src/*": ["./src/*"],
       "@test/*": ["./test/*"]
     },
-    "rootDirs": [
-      "./src",
-      "./test"
-    ],
+    "rootDirs": ["./src", "./test"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
+    // "useUnknownInCatchVariables": false
   },
-  "include": [
-    "./src/**/*.ts",
-    "./test/**/*.ts"
-  ],
-  "exclude": [
-    "./node_modules/*",
-    "dist"
-  ]
+  "include": ["./src/**/*.ts", "./test/**/*.ts"],
+  "exclude": ["./node_modules/*", "dist"]
 }
