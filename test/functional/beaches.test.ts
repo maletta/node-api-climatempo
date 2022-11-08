@@ -1,5 +1,6 @@
 import { Beach } from '@src/models/beach';
 
+// test the integratio with the database and the controller
 describe('Beaches functional tests', () => {
   beforeAll(async () => await Beach.deleteMany({}));
 

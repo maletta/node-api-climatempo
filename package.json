@@ -21,10 +21,11 @@
     "dev": "ts-node-dev src/index.ts",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
-    "test:unit": "jest",
     "style:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "style:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "test:unit": "jest",
     "test:functional": "jest --projects ./test --runInBand",
+    "test": "yarn test:unit && yarn test:functional",
     "docker": "docker run -p 27017:27017 -d mongo"
   },
   "bugs": {
@@ -38,7 +39,7 @@
     "config": "^3.3.8",
     "express": "^4.18.1",
     "module-alias": "^2.2.2",
-    "mongoose": "6.1.4"
+    "mongoose": "^6.7.1"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

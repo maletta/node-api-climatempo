@@ -11,7 +11,7 @@ export class BeachesController {
     try {
       const beach = new Beach(req.body);
       const result = await beach.save();
-      console.log('result ', result.toJSON());
+
       res.status(201).send(result);
     } catch (error) {
       if (error instanceof mongoose.Error.ValidationError) {

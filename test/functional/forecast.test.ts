@@ -3,6 +3,7 @@ import nock from 'nock';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import apiForecastResponse1BeachFixture from '@test/fixtures/api_forecast_response_1_beach.json';
 
+// test the integratio with the database and the controller
 describe('Beach forecast function test', () => {
   // before each test delete all beaches and create default beach
   beforeEach(async () => {
