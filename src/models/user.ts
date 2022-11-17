@@ -1,17 +1,21 @@
 import mongoose, { Model } from 'mongoose';
-import mongooseUniqueValidator from 'mongoose-unique-validator';
+// import mongooseUniqueValidator from 'mongoose-unique-validator';
 
 export interface User {
   _id?: string;
   name: string;
-  mail: string;
+  email: string;
   password: string;
+}
+
+export enum CUSTOM_VALIDATION {
+  DUPLICATED = 'DUPLICATE',
 }
 
 const schema = new mongoose.Schema<User>(
   {
     name: { type: String, required: true },
-    mail: {
+    email: {
       type: String,
       required: true,
       unique: true,
@@ -29,7 +33,15 @@ const schema = new mongoose.Schema<User>(
   }
 );
 
+schema.path('email').validate(
+  async (email: string) => {
+    const emailCount = await mongoose.models.User.countDocuments({ email });
+    return !emailCount;
+  },
+  'already exists in the database.',
+  CUSTOM_VALIDATION.DUPLICATED
+);
 // Apply the uniqueValidator plugin to userSchema.
-schema.plugin(mongooseUniqueValidator);
+// schema.plugin(mongooseUniqueValidator);
 
 export const User: Model<User> = mongoose.model('User', schema);

@@ -8,7 +8,7 @@ describe('Users functional tests', () => {
     it('should successfully create a new user', async () => {
       const newUser = {
         name: 'John Doe',
-        mail: 'john@mail.com',
+        email: 'john@mail.com',
         password: '1234',
       };
 
@@ -18,10 +18,9 @@ describe('Users functional tests', () => {
       expect(response.body).toEqual(expect.objectContaining(newUser));
     });
 
-    it('should return a 422 when there is a validation error', async () => {
+    it('should return 400 when there is a validation error a validation error', async () => {
       const newUser = {
-        name: 'John Doe',
-        mail: 'john@mail.com',
+        email: 'john2@mail.com',
         password: '1234',
       };
 
@@ -29,8 +28,24 @@ describe('Users functional tests', () => {
 
       expect(response.status).toBe(422);
       expect(response.body).toEqual({
-        error:
-          'User validation failed: mail: Error, expected `mail` to be unique. Value: `john@mail.com`',
+        code: 422,
+        error: 'User validation failed: name: Path `name` is required.',
+      });
+    });
+
+    it('should return 409 when the email already exists', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '1234',
+      };
+
+      const response = await global.testRequest.post('/users').send(newUser);
+
+      expect(response.status).toBe(409);
+      expect(response.body).toEqual({
+        code: 409,
+        error: 'User validation failed: email: already exists in the database.',
       });
     });
   });
