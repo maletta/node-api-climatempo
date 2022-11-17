@@ -2,9 +2,10 @@ import { User } from '@src/models/user';
 import AuthService from '@src/services/auth';
 
 describe('Users functional tests', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await User.deleteMany({});
   });
+
   describe('When creating a new user ', () => {
     it('should successfully create a new user with encrypted password', async () => {
       const newUser = {
@@ -49,6 +50,7 @@ describe('Users functional tests', () => {
         password: '1234',
       };
 
+      await global.testRequest.post('/users').send(newUser);
       const response = await global.testRequest.post('/users').send(newUser);
 
       expect(response.status).toBe(409);
@@ -56,6 +58,53 @@ describe('Users functional tests', () => {
         code: 409,
         error: 'User validation failed: email: already exists in the database.',
       });
+    });
+  });
+
+  describe('When authenticating a user', () => {
+    // it is more economical and easier to transit a token than creating a session and storing it in a redis or locally
+    it('should generate a token fora valid user', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '1234',
+      };
+
+      await new User(newUser).save();
+
+      const response = await global.testRequest
+        .post('/users/authenticate')
+        .send({ email: newUser.email, password: newUser.password });
+
+      console.log(response.body);
+
+      expect(response.body).toEqual(
+        expect.objectContaining({ token: expect.any(String) })
+      );
+    });
+
+    it('should return UNAUTHORIZED if the user with the given email is not found', async () => {
+      const response = await global.testRequest
+        .post('/users/authenticate')
+        .send({ email: 'some-email@mail.com', password: '1234' });
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should return UNAUTHORIZED if the user is found but the password does not match', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '1234',
+      };
+
+      await new User(newUser).save();
+
+      const response = await global.testRequest
+        .post('/users/authenticate')
+        .send({ email: 'john@mail.com', password: 'different password' });
+
+      expect(response.status).toBe(401);
     });
   });
 });
