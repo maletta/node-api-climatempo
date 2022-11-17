@@ -1,4 +1,5 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
+import AuthService from '@src/services/auth';
 // import mongooseUniqueValidator from 'mongoose-unique-validator';
 
 export interface User {
@@ -7,6 +8,8 @@ export interface User {
   email: string;
   password: string;
 }
+
+export interface UserModel extends Omit<User, '_id'>, Document {}
 
 export enum CUSTOM_VALIDATION {
   DUPLICATED = 'DUPLICATE',
@@ -33,6 +36,9 @@ const schema = new mongoose.Schema<User>(
   }
 );
 
+/**
+ * Validates the email and throws a validation error, otherwise it will throw a 500
+ */
 schema.path('email').validate(
   async (email: string) => {
     const emailCount = await mongoose.models.User.countDocuments({ email });
@@ -41,7 +47,24 @@ schema.path('email').validate(
   'already exists in the database.',
   CUSTOM_VALIDATION.DUPLICATED
 );
-// Apply the uniqueValidator plugin to userSchema.
-// schema.plugin(mongooseUniqueValidator);
+
+// anonymous function rather than arrow function to get context from "this"
+// this is mongoose.Document
+schema.pre<UserModel>('save', async function (): Promise<void> {
+  // if exist password (is not only a name or email update) or is a password update then will encrypt
+  if (!this.password || !this.isModified('password')) {
+    return;
+  }
+
+  try {
+    const hashedPassword = await AuthService.hashPassword(this.password);
+    this.password = hashedPassword;
+  } catch (err) {
+    console.error(`Error hashing the password for the user ${this.name}`);
+  }
+});
 
 export const User: Model<User> = mongoose.model('User', schema);
+
+// Apply the uniqueValidator plugin to userSchema.
+// schema.plugin(mongooseUniqueValidator);

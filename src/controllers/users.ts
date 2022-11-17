@@ -1,7 +1,6 @@
 import { Controller, Post } from '@overnightjs/core';
 import { Request, Response } from 'express';
 import { User } from '@src/models/user';
-import mongoose from 'mongoose';
 import { BaseController } from './index';
 
 @Controller('users')
