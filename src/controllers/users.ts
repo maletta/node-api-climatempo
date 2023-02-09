@@ -12,6 +12,7 @@ export class UsersController extends BaseController {
       const newUser = new User(req.body);
       const result = await newUser.save();
 
+      // mongoose automatically format to json
       res.status(201).send(result);
     } catch (error) {
       this.sendCreateUpdateErrorResponse(res, error);
@@ -33,6 +34,7 @@ export class UsersController extends BaseController {
         .send({ code: 401, error: 'Password does not match!' });
     }
 
+    // need format to json
     const token = AuthService.generateToken(user.toJSON());
 
     return res.status(200).send({ token });
