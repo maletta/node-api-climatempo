@@ -16,7 +16,6 @@ export interface Beach {
   user: string | null;
 }
 
-console.log("new beaches")
 
 const schema = new mongoose.Schema<Beach>(
   {
@@ -24,7 +23,7 @@ const schema = new mongoose.Schema<Beach>(
     lng: { type: Number, required: true },
     name: { type: String, required: true },
     position: { type: String, required: true },
-    user: {type: Schema.Types.ObjectId, ref: "User", required: true}
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 
   },
   {
