@@ -2,7 +2,10 @@
   "App": {
     "port": "PORT",
     "database": {
-      "mongoUrl": "MONGO_URL_DATABASE"
+      "mongoUrl": "MONGO_URL_DATABASE",
+      "mongoUser": "MONGOUSER",
+      "mongoPassword": "MONGOPASSWORD",
+      "mongoDatabase": "MONGODATABASE"
     }, 
     "auth": {
       "key": "some-key",
