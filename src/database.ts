@@ -24,15 +24,7 @@ export const connect = async (): Promise<void> => {
   console.log('------------------ database options -------------------------');
   console.log(options);
 
-  await mongooseConnect(
-    dbConfig.get('mongoUrl'),
-    validateOptions(options)
-  ).then((error) => {
-    if (error) {
-      console.log(error);
-      return console.log('Unable to connect to the db.');
-    }
-  });
+  await mongooseConnect(dbConfig.get('mongoUrl'), validateOptions(options));
 };
 
 export const close = (): Promise<void> => connection.close();
