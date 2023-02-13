@@ -5,27 +5,21 @@ jobs:
   echo_variables_1:
     runs-on: ubuntu-latest
     steps:
-      # - name: Dump GitHub context
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # - name: Dump secrets context
       #   id: github_context_step
-      #   run: echo '${{ toJSON(github) }}'
-      # - name: Dump job context
-      #   run: echo '${{ toJSON(job) }}'
-      # - name: Dump steps context
-      #   run: echo '${{ toJSON(steps) }}'
-      # - name: Dump runner context
-      #   run: echo '${{ toJSON(runner) }}'
-      # - name: Dump strategy context
-      #   run: echo '${{ toJSON(strategy) }}'
-      # - name: Dump matrix context
-      #   run: echo '${{ toJSON(matrix) }}'
-      - name: Dump secrets context
-        id: github_context_step
-        run: echo '${{ toJSON(secrets) }}'
+      #   run: echo '${{ toJSON(secrets) }}'
 
   echo_variables_2:
     runs-on: ubuntu-latest
     needs: echo_variables_1
     steps:
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(secrets) }}'
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
