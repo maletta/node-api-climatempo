@@ -32,8 +32,11 @@ jobs:
       - name: Install packages
         run: yarn install --frozen-lockfile
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - name: Run tests
-        run: yarn run test:functional beaches
+        run: yarn run test
 
       - name: Install Railway
         run: npm i -g @railway/cli
