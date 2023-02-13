@@ -1,4 +1,4 @@
-name: 'Deploy to Railway'
+name: 'Echo variables'
 
 on:
   push:
