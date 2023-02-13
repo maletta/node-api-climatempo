@@ -1,0 +1,30 @@
+name: 'Deploy to Railway'
+
+on:
+  push:
+    branches: [test-actions]
+
+jobs:
+  deploy: # indica o nome do job
+    runs-on: ubuntu-latest
+
+    # strategy indica o que conterá no meu container
+    strategy:
+      matrix:
+        node-version: [16.x]
+        mongodb-version: [4.2]
+
+    steps: # indica os passos a serem realizados
+      - name: Secrest
+        run: |
+          echo ${{ secrets.RAILWAY_TOKEN }}
+          echo "variable from shell environment : $env_var"
+
+      - name: Jobs
+        run: echo ${{job}}
+      - name: JobsString
+        riun: echo ${{ toJSON(job) }}
+      - name: steps
+        run: echo ${{toJSON(steps)}}
+      - name: secrets
+        run: echo ${{toJSON(secrets)}}
