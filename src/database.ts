@@ -12,7 +12,7 @@ function validateOptions(options: ConnectOptions): ConnectOptions {
 }
 
 export const connect = async (): Promise<void> => {
-  console.log('------------------ database log -------------------------');
+  console.log('------------------ database log ------------------------');
   console.log('mongo url', dbConfig.get('mongoUrl'));
 
   const options: ConnectOptions = {
