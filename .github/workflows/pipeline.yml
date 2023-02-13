@@ -19,7 +19,6 @@ jobs:
         run: |
           echo ${{ secrets.RAILWAY_TOKEN }}
           echo "variable from shell environment : $env_var"
-
       - name: Jobs
         run: echo ${{job}}
       - name: JobsString
