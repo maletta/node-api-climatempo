@@ -35,13 +35,13 @@ jobs:
       - name: Run tests
         run: yarn run test:functional beaches
 
-      # - name: Install Railway
-      #   run: npm i -g @railway/cli
+      - name: Install Railway
+        run: npm i -g @railway/cli
 
-      # - name: Deploy
-      #   run: railway up
-      #   env:
-      #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Finish
         run: echo Finalizando deploy
