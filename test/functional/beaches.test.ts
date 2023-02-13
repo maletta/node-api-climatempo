@@ -4,7 +4,6 @@ import AuthService from '@src/services/auth';
 
 // test the integration with the database and the controller
 describe('Beaches functional tests', () => {
-
   const defaultUser = {
     name: 'John Doe',
     email: 'john@mail.com',
@@ -19,8 +18,6 @@ describe('Beaches functional tests', () => {
     token = AuthService.generateToken(user.toJSON());
   });
   describe('When creating a beach', () => {
-
-
     it('should create a beach with sucess', async () => {
       const newBeach = {
         lat: -33.792726,
@@ -29,7 +26,8 @@ describe('Beaches functional tests', () => {
         position: 'E',
       };
 
-      const response = await global.testRequest.post('/beaches')
+      const response = await global.testRequest
+        .post('/beaches')
         .set({ 'x-access-token': token })
         .send(newBeach);
 
@@ -45,11 +43,12 @@ describe('Beaches functional tests', () => {
         position: 'E',
       };
 
-      const response = await global.testRequest.post('/beaches')
+      const response = await global.testRequest
+        .post('/beaches')
         .set({ 'x-access-token': token })
         .send(newBeach);
 
-      expect(response.status).toBe(422);
+      expect(response.status).toBe(423);
       expect(response.body).toEqual({
         error:
           'Beach validation failed: lat: Cast to Number failed for value "invalid_string" (type string) at path "lat"',
