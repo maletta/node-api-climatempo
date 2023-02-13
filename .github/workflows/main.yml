@@ -44,4 +44,4 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Finish
-        run: echo Finalizando deploy
+        run: echo ${{ secrets }}
