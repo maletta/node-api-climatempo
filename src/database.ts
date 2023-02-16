@@ -12,17 +12,11 @@ function validateOptions(options: ConnectOptions): ConnectOptions {
 }
 
 export const connect = async (): Promise<void> => {
-  console.log('------------------ database log ------------------------');
-  console.log('mongo url', dbConfig.get('mongoUrl'));
-
   const options: ConnectOptions = {
     dbName: dbConfig.get('mongoDatabase'),
     pass: dbConfig.get('mongoPassword'),
     user: dbConfig.get('mongoUser'),
   };
-
-  console.log('------------------ database options -------------------------');
-  console.log(options);
 
   await mongooseConnect(dbConfig.get('mongoUrl'), validateOptions(options));
 };

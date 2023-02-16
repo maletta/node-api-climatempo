@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/src/index.js",
-    "dev": "ts-node-dev src/index.ts",
+    "server": "yarn build && node dist/src/index.js",
+    "dev": "ts-node-dev src/index.ts | pino-pretty -c",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
     "style:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -16,7 +17,9 @@
     "test": "yarn test:unit && yarn test:functional",
     "docker": "docker run -p 27017:27017 -d mongo"
   },
-  "engines": {"node": "16"},
+  "engines": {
+    "node": "16"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maletta/typecript-climatempo"
@@ -44,7 +47,8 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "mongoose": "^6.9.1",
-    "mongoose-unique-validator": "^3.1.0"
+    "mongoose-unique-validator": "^3.1.0",
+    "pino": "^8.10.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -56,12 +60,14 @@
     "@types/mongoose-unique-validator": "^1.0.6",
     "@types/nock": "^11.1.0",
     "@types/node": "^18.7.23",
+    "@types/pino": "^7.0.5",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.24.0",
     "jest": "^29.0.3",
     "nock": "^13.2.9",
+    "pino-pretty": "^9.2.0",
     "prettier": "^2.7.1",
     "supertest": "^6.2.4",
     "ts-jest": "^29.0.2",
