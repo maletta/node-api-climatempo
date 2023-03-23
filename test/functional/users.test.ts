@@ -58,7 +58,8 @@ describe('Users functional tests', () => {
       expect(response.body).toEqual({
         code: 409,
         error: 'Conflict',
-        message: 'User validation failed: email: already exists in the database.',
+        message:
+          'User validation failed: email: already exists in the database.',
       });
     });
   });
@@ -105,6 +106,42 @@ describe('Users functional tests', () => {
         .send({ email: 'john@mail.com', password: 'different password' });
 
       expect(response.status).toBe(401);
+    });
+  });
+
+  describe('When getting user profile info', () => {
+    it('Should return the tokens owner profile information', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '1234',
+      };
+
+      const user = await new User(newUser).save();
+      const token = AuthService.generateToken(user.toJSON());
+      const { body, status } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token });
+
+      expect(status).toBe(200);
+
+      expect(body).toMatchObject(JSON.parse(JSON.stringify({ user })));
+    });
+
+    it('Should return Not Found, when the user is not found', async () => {
+      const newUser = {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: '1234',
+      };
+
+      const token = AuthService.generateToken(newUser);
+      const { body, status } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token });
+
+      expect(status).toBe(404);
+      expect(body.message).toBe('User not found');
     });
   });
 });
