@@ -28,6 +28,7 @@ export interface ForecastPoint {
   waveHeight: number;
   windDirection: number;
   windSpeed: number;
+  rating?: number;
 }
 
 // error by our side
