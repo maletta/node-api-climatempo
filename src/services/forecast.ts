@@ -32,7 +32,14 @@ export class Forecast {
 
       return timeForecast.map((t) => ({
         time: t.time,
-        forecast: _.orderBy(t.forecast, ['rating'], ['desc']),
+        // forecast: _.orderBy(t.forecast, ['rating'], ['desc']),
+        forecast: t.forecast.sort((a, b) => {
+          const f = a.rating || 0;
+          const g = b.rating || 0;
+
+          console.log('rating sort ', f, g);
+          return g - f;
+        }),
       }));
     } catch (error) {
       logger.error(error);
