@@ -1,4 +1,4 @@
-import { Beach, BeachPosition } from '@src/models/beach';
+import { Beach, GeoPosition } from '@src/models/beach';
 import nock from 'nock';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
 import apiForecastResponse1BeachFixture from '@test/fixtures/api_forecast_response_1_beach.json';
@@ -26,7 +26,7 @@ describe('Beach forecast function test', () => {
       lat: -33.792726,
       lng: 151.289824,
       name: 'Manly',
-      position: BeachPosition.E,
+      position: GeoPosition.E,
       user: user.id,
     };
 
@@ -54,7 +54,7 @@ describe('Beach forecast function test', () => {
 
     const { body, status } = await global.testRequest
       .get('/forecast')
-      .set({ 'x-access-token': token })
+      .set({ 'x-access-token': token });
     expect(status).toBe(200);
     // Make sure we use toEqual to check value not the object and array itself
     expect(body).toEqual(apiForecastResponse1BeachFixture);
