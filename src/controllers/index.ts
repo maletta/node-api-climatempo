@@ -21,14 +21,12 @@ export abstract class BaseController {
 
     if (castingError instanceof mongoose.Error.ValidationError) {
       clientError = this.handleClientErrors(castingError);
-      res
-        .status(clientError.code)
-        .send(
-          ApiError.format({
-            code: clientError.code,
-            message: clientError.error,
-          })
-        );
+      res.status(clientError.code).send(
+        ApiError.format({
+          code: clientError.code,
+          message: clientError.error,
+        })
+      );
     } else {
       logger.error(error);
       res
@@ -48,7 +46,7 @@ export abstract class BaseController {
     if (duplicatedKindError.length) {
       return { code: 409, error: error.message };
     } else {
-      return { code: 422, error: error.message }; // 422 refence to data error
+      return { code: 400, error: error.message }; // 422 refence to data error
     }
   }
 
