@@ -14,6 +14,7 @@ import { BeachesController } from './controllers/beaches';
 import { UsersController } from './controllers/users';
 import logger from './logger';
 import apiSchema from './api.schema.json';
+import { apiErrorValidator } from './middleware/api-error.validator';
 
 export class SetupServer extends Server {
   constructor(public port = 3000) {
@@ -25,6 +26,7 @@ export class SetupServer extends Server {
     this.docsSetup();
     this.setupControllers();
     await this.databaseSetup();
+    this.setupErrorHandlers();
   }
 
   private setupExpress(): void {
@@ -37,13 +39,17 @@ export class SetupServer extends Server {
     );
   }
 
+  private setupErrorHandlers(): void {
+    this.app.use(apiErrorValidator);
+  }
+
   private async docsSetup(): Promise<void> {
     this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSchema));
     this.app.use(
       OpenApiValidator.middleware({
         apiSpec: apiSchema as OpenAPIV3.Document, // documento json precisa ser tipado
-        validateRequests: false,
-        validateResponses: false,
+        validateRequests: true,
+        validateResponses: true,
       })
     );
   }
