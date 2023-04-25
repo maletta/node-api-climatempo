@@ -62,3 +62,6 @@ typings/
 
 # typescript compiled code
 dist/
+
+# data from docker compose
+data/
