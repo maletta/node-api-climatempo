@@ -10,7 +10,7 @@ import ApiError from '@src/util/errors/api-errors';
 
 const rateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 1,
+  max: 10,
   keyGenerator(req: Request) : string {
     return req.ip;
   },
