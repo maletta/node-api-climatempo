@@ -244,6 +244,21 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Reached request limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Too Many Requests",
+                  "code": "429",
+                  "error": "Too Many Requests"
+                }
+              }
+            }
           }
         }
       }

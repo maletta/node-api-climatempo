@@ -25,6 +25,7 @@
     "rootDirs": ["./src", "./test"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
     // "useUnknownInCatchVariables": false
     "typeRoots": ["./src/types", "./node_modules/@types"]
   },
