@@ -1,47 +1,80 @@
+import { Beach, GeoPosition } from '@src/models/beach';
+import nock from 'nock';
+import stormGlassWeather3HoursFixture from '@test/fixtures/stormglass_weather_3_hours.json';
+import apiForecastResponse1BeachFixture from '@test/fixtures/api_forecast_response_1_beach.json';
+import { User } from '@src/models/user';
+import AuthService from '@src/services/auth';
+
+// test the integratio with the database and the controller
 describe('Beach forecast function test', () => {
+  const defaultUser = {
+    name: 'John Doe',
+    email: 'john@mail.com',
+    password: '1234',
+  };
+  let token: string;
+
+  // before each test delete all beaches and create default beach
+  beforeEach(async () => {
+    await Beach.deleteMany({});
+    await User.deleteMany({});
+
+    const user = await new User(defaultUser).save();
+    token = AuthService.generateToken(user.toJSON());
+
+    const defaultBeach = {
+      lat: -33.792726,
+      lng: 151.289824,
+      name: 'Manly',
+      position: GeoPosition.E,
+      user: user.id,
+    };
+
+    await new Beach({ ...defaultBeach }).save();
+  });
+
   it('should return a forecast with just a few times', async () => {
-    const { body, status } = await global.testRequest.get('/forecast');
+    // nock.recorder.rec(); // record and print the request and configs
+
+    // nock will intercept this endpoint with this parameters
+    // nock dont mock axios module, nock just mock HTTP calls for a URL
+    nock('https://api.stormglass.io:443', {
+      encodedQueryParams: true,
+      reqheaders: { Authorization: (): boolean => true },
+    })
+      .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+      .get('/v2/weather/point')
+      .query({
+        lat: '-33.792726',
+        lng: '151.289824',
+        params: /(.*)/,
+        source: 'noaa',
+        end: /(.*)/,
+      })
+      .reply(200, stormGlassWeather3HoursFixture);
+
+    const { body, status } = await global.testRequest
+      .get('/forecast')
+      .set({ 'x-access-token': token });
     expect(status).toBe(200);
     // Make sure we use toEqual to check value not the object and array itself
-    expect(body).toEqual([
-      {
-        time: '2020-04-26T00:00:00+00:00',
-        forecast: [
-          {
-            lat: -33.792726,
-            lng: 151.289824,
-            name: 'Manly',
-            position: 'E',
-            rating: 2,
-            swellDirection: 64.26,
-            swellHeight: 0.15,
-            swellPeriod: 3.89,
-            time: '2020-04-26T00:00:00+00:00',
-            waveDirection: 231.38,
-            waveHeight: 0.47,
-            windDirection: 299.45,
-          },
-        ],
-      },
-      {
-        time: '2020-04-26T01:00:00+00:00',
-        forecast: [
-          {
-            lat: -33.792726,
-            lng: 151.289824,
-            name: 'Manly',
-            position: 'E',
-            rating: 2,
-            swellDirection: 123.41,
-            swellHeight: 0.21,
-            swellPeriod: 3.67,
-            time: '2020-04-26T01:00:00+00:00',
-            waveDirection: 232.12,
-            waveHeight: 0.46,
-            windDirection: 310.48,
-          },
-        ],
-      },
-    ]);
+    expect(body).toEqual(apiForecastResponse1BeachFixture);
+  });
+
+  it('should return 500 if something goes wrong during thre processing', async () => {
+    nock('https://api.stormglass.io:443', {
+      encodedQueryParams: true,
+      reqheaders: { Authorization: (): boolean => true },
+    })
+      .defaultReplyHeaders({ 'access-control-allow-origin': '*' })
+      .get('/v2/weather/point')
+      .query({ lat: '-33.792726', lng: '151.289824' })
+      .replyWithError('Something went wrong');
+
+    const { status } = await global.testRequest
+      .get('/forecast')
+      .set({ 'x-access-token': token });
+
+    expect(status).toBe(500);
   });
 });

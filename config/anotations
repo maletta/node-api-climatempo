@@ -1,0 +1,5 @@
+Aparentemente o arquivo "custom-environment-variables.json"
+vai pegar variaveis do ambiente e setá-las no value dos arquivos default.json ou test.json
+
+Exemplo {"App.port" = "PORT"} => App.port vai receber o valor da variável de ambiente PORT de onde estivermos
+hospedando a aplicação

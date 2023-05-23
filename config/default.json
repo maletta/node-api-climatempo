@@ -1,10 +1,25 @@
- {
+{
   "App": {
+    "port": "3000",
+    "database": {
+      "mongoUrl": "mongodb://localhost:27017/surf-forecast",
+      "mongoUser": null,
+      "mongoPassword": null,
+      "mongoDatabase": null
+    },
+    "auth": {
+      "key": "some-key",
+      "tokenExpiresIn": "20000000"
+    },
     "resources": {
       "StormGlass": {
-        "apiUrl" : "https://api.stormglass.io/v2",
-        "apiToken": "do-not-hard-code"
+        "apiUrl": "https://api.stormglass.io/v2",
+        "apiToken": "735f5dd0-5bcd-11ed-a654-0242ac130002-735f5e34-5bcd-11ed-a654-0242ac130002"
       }
+    },
+    "logger": {
+      "enabled": true,
+      "level": "info"
     }
   }
- }
+}

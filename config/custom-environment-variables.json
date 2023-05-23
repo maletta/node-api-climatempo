@@ -1,0 +1,21 @@
+{
+  "App": {
+    "port": "PORT",
+    "database": {
+      "mongoUrl": "MONGO_URL_DATABASE",
+      "mongoUser": "MONGOUSER",
+      "mongoPassword": "MONGOPASSWORD",
+      "mongoDatabase": "MONGODATABASE"
+    }, 
+    "auth": {
+      "key": "some-key",
+      "tokenExpiresIn": "20000000"
+    },
+    "resources": {
+      "StormGlass": {
+        "apiUrl" : "https://api.stormglass.io/v2",
+        "apiToken": "some-token"
+      }
+    }
+  }
+ }
